@@ -4,6 +4,8 @@ A self-contained, client-side web app for solving simple-substitution cryptogram
 with auto-generated statistical solving aids. No build step, no dependencies — just
 open `index.html` in a browser.
 
+**🔗 Live demo: https://miketweaver.github.io/cryptogram-solver/**
+
 ## Features
 
 - **Paste & solve** — drop in any simple-substitution cipher; spacing and punctuation
