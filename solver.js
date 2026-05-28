@@ -50,6 +50,15 @@ function startSolving() {
 }
 
 function newPuzzle() {
+  // Keep the cipher text around for editing, but discard the solved state
+  // (guesses, selection) and the saved session.
+  els.cipherInput.value = state.rawText;
+  state.rawText = "";
+  state.mapping = {};
+  state.selected = null;
+  state.cursor = null;
+  clearSavedState();
+
   els.solverView.classList.add("hidden");
   els.inputView.classList.remove("hidden");
   els.cipherInput.focus();
@@ -100,6 +109,9 @@ function renderCipher() {
       display.appendChild(brk);
     }
   });
+
+  // Every state change routes through here, so persist after each render.
+  saveState();
 }
 
 function makeCell(ch, idx) {
@@ -383,9 +395,55 @@ function gramCard(title, entries, note) {
 }
 
 // ---------------------------------------------------------------------------
+// Persistence (localStorage) — keep the puzzle and guesses across reloads,
+// tab closes, and trips to the stats reference page.
+// ---------------------------------------------------------------------------
+const STORAGE_KEY = "cryptogramSolver.v1";
+
+function saveState() {
+  if (!state.rawText) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      rawText: state.rawText,
+      mapping: state.mapping,
+      selected: state.selected,
+      cursor: state.cursor,
+    }));
+  } catch (e) { /* storage unavailable (e.g. private mode) — ignore */ }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data || typeof data.rawText !== "string" || !data.rawText) return false;
+    state.rawText = data.rawText;
+    state.mapping = (data.mapping && typeof data.mapping === "object") ? data.mapping : {};
+    state.selected = typeof data.selected === "string" ? data.selected : null;
+    state.cursor = typeof data.cursor === "number" ? data.cursor : null;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function clearSavedState() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+
+// ---------------------------------------------------------------------------
 // Wire up
 // ---------------------------------------------------------------------------
 els.solveBtn.addEventListener("click", startSolving);
 els.newPuzzleBtn.addEventListener("click", newPuzzle);
 els.clearGuessesBtn.addEventListener("click", clearGuesses);
 document.addEventListener("keydown", onKeyDown);
+
+// Restore a saved session, if any, and jump straight back into the solver.
+if (loadState()) {
+  renderCipher();
+  renderStats(computeStats(state.rawText));
+  els.inputView.classList.add("hidden");
+  els.solverView.classList.remove("hidden");
+}
