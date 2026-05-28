@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptogram Solver</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Cryptogram Solver</h1>
+  </header>
+
+  <main>
+    <!-- INPUT VIEW -->
+    <section id="input-view" class="view">
+      <p class="lede">
+        Paste a simple-substitution cipher below. Spacing and punctuation are preserved &mdash;
+        only letters are encoded.
+      </p>
+      <textarea id="cipher-input" rows="8" spellcheck="false"
+        placeholder="Paste your cryptogram here&#10;&#10;e.g.  WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ."></textarea>
+      <div class="input-actions">
+        <button id="solve-btn" type="button" class="primary-btn">OK, let's decipher this thing!</button>
+      </div>
+    </section>
+
+    <!-- SOLVER VIEW -->
+    <section id="solver-view" class="view hidden">
+      <div class="solver-toolbar">
+        <button id="new-puzzle-btn" type="button" class="secondary-btn">&larr; New puzzle</button>
+        <button id="clear-guesses-btn" type="button" class="secondary-btn">Clear all guesses</button>
+        <span class="hint">
+          Click any character (or <kbd>Shift</kbd>+letter) to select, then type to substitute.
+          <kbd>Tab</kbd>/<kbd>&rarr;</kbd> move to the next letter, <kbd>&larr;</kbd> the previous.
+          Punctuation defaults to itself but can be replaced too.
+          <kbd>Space</kbd>/<kbd>Del</kbd>/<kbd>Backspace</kbd> resets to default.
+        </span>
+      </div>
+
+      <div id="cipher-display" class="cipher-display" aria-label="Cipher text"></div>
+
+      <div class="stats-header">
+        <h2>Solving aids</h2>
+        <a class="ref-link" href="stats.html">How to use these clues &rarr;</a>
+      </div>
+      <div id="stats" class="stats-grid"></div>
+    </section>
+  </main>
+
+  <script src="solver.js"></script>
+</body>
+</html>

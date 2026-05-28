@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptogram Solving Aids — Reference</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>How to Use the Solving Aids</h1>
+    <a class="ref-link" href="index.html">&larr; Back to the solver</a>
+  </header>
+
+  <main>
+    <div class="ref-content">
+      <p class="lede">
+        In a simple-substitution cryptogram, each letter of the alphabet is consistently
+        replaced by another. The statistics below don't decode the puzzle for you &mdash; they
+        narrow the possibilities so you can make smart guesses. Confirm each guess by checking
+        that the words it produces make sense.
+      </p>
+
+      <section>
+        <h2>Letter frequency</h2>
+        <p>
+          The count and percentage of every cipher letter. English text has a very predictable
+          frequency profile, so the most common cipher letters are likely to be the most common
+          English letters.
+        </p>
+        <ul>
+          <li>Typical English order, most to least common: <code>E T A O I N S H R D L U</code>&hellip;</li>
+          <li><strong>E</strong> alone is usually ~12&ndash;13% of all letters &mdash; often the single most frequent.</li>
+          <li>The rarest letters are <code>J Q X Z</code>; a cipher letter appearing once or twice is probably one of these.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Digraphs (2-letter sequences)</h2>
+        <p>
+          Pairs of adjacent letters within a word. The cipher digraphs that recur most often
+          likely correspond to common English pairs.
+        </p>
+        <ul>
+          <li>Most common English digraphs: <code>TH HE IN ER AN RE ON AT EN</code>.</li>
+          <li><code>TH</code> is by far the most frequent &mdash; pair this with finding <code>THE</code> in the trigraphs.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Trigraphs (3-letter sequences)</h2>
+        <p>
+          Three adjacent letters within a word. A highly recurring trigraph is a strong anchor.
+        </p>
+        <ul>
+          <li>Most common English trigraphs: <code>THE AND ING ION ENT HER</code>.</li>
+          <li>A three-letter word that is the most common word in the text is almost always <code>THE</code>.</li>
+          <li>A trigraph ending many words is often <code>ING</code>.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Double letters</h2>
+        <p>
+          Two identical letters in a row. Only some letters commonly double in English.
+        </p>
+        <ul>
+          <li>Common doubles: <code>LL SS EE OO TT FF RR NN PP</code>.</li>
+          <li>Doubles almost never use <code>A I U Y H J K Q V W X</code> &mdash; you can rule those out.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Reversals</h2>
+        <p>
+          A letter pair that appears in <em>both</em> orders, e.g. the cipher shows both
+          <code>QW</code> and <code>WQ</code>. These often correspond to reversible English pairs.
+        </p>
+        <ul>
+          <li>Common reversible pairs: <code>ER/RE</code>, <code>ON/NO</code>, <code>ES/SE</code>, <code>ED/DE</code>, <code>ST/TS</code>.</li>
+          <li>One of the two letters in a reversal is frequently a vowel.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>ABA combinations</h2>
+        <p>
+          A three-letter pattern where the first and last letters are the same and the middle
+          differs (e.g. cipher <code>QWQ</code>). The repeated outer letter is usually a vowel.
+        </p>
+        <ul>
+          <li>Common ABA patterns: <code>EVE EYE ERE ELE</code> (often outer <code>E</code>) and <code>ASA OSO</code>.</li>
+          <li>Use these to pin down vowel placement once frequency gives you candidates.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>One- and two-letter words</h2>
+        <p>
+          Word shapes are preserved, so short words are giveaways:
+        </p>
+        <ul>
+          <li>A one-letter word is <code>A</code> or <code>I</code>.</li>
+          <li>Common two-letter words: <code>OF TO IN IS IT BE AS AT SO ON</code>.</li>
+          <li>An apostrophe followed by one letter is usually <code>'S</code> or <code>'T</code>; by two, <code>'RE</code> / <code>'LL</code> / <code>'VE</code>.</li>
+        </ul>
+      </section>
+
+      <p><a class="ref-link" href="index.html">&larr; Back to the solver</a></p>
+    </div>
+  </main>
+</body>
+</html>
