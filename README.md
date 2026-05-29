@@ -19,6 +19,10 @@ open `index.html` in a browser.
   - `Tab` / `→` move to the next letter, `Shift`+`Tab` / `←` to the previous.
   - `Space` / `Delete` / `Backspace` resets a cell to its default.
   - Special characters default to showing themselves but can be replaced too.
+- **Save & share** — your puzzle and guesses are kept in the browser
+  (`localStorage`) across reloads and tab closes. Copy the source cipher, the
+  current solution, or the key (`CIPHER=PLAIN` lines) to the clipboard, and
+  paste a key back in to restore or share progress.
 - **Solving aids** (auto-generated per puzzle)
   - Letter frequency table (count + percentage for all 26 letters)
   - Recurring digraphs and trigraphs

@@ -137,6 +137,54 @@ kbd {
   font-size: 0.8em;
 }
 
+/* ---------- Export / import toolbar ---------- */
+.io-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.io-toolbar .hint { margin-left: 0.25rem; }
+
+.import-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+}
+.import-panel.hidden { display: none; }
+.import-panel label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.import-panel textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+}
+.import-panel textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.import-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
 /* ---------- Cipher display ---------- */
 .cipher-display {
   background: var(--surface);

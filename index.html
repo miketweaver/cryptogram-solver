@@ -40,6 +40,27 @@
 
       <div id="cipher-display" class="cipher-display" aria-label="Cipher text"></div>
 
+      <div class="io-toolbar">
+        <button id="copy-source-btn" type="button" class="secondary-btn">Copy source</button>
+        <button id="copy-solution-btn" type="button" class="secondary-btn">Copy solution</button>
+        <button id="copy-key-btn" type="button" class="secondary-btn">Copy key</button>
+        <button id="import-key-btn" type="button" class="secondary-btn">Import key&hellip;</button>
+        <span class="hint">Solution shows unsolved letters in lowercase.</span>
+      </div>
+
+      <div id="import-panel" class="import-panel hidden">
+        <label for="import-text">
+          Paste a key &mdash; one <code>CIPHER=PLAIN</code> pair per line (e.g. <code>W=T</code>).
+          Lines starting with <code>#</code> are ignored. This replaces your current guesses.
+        </label>
+        <textarea id="import-text" rows="6" spellcheck="false"
+          placeholder="W=T&#10;K=H&#10;H=E"></textarea>
+        <div class="import-actions">
+          <button id="apply-key-btn" type="button" class="primary-btn">Apply key</button>
+          <button id="cancel-import-btn" type="button" class="secondary-btn">Cancel</button>
+        </div>
+      </div>
+
       <div class="stats-header">
         <h2>Solving aids</h2>
         <a class="ref-link" href="stats.html">How to use these clues &rarr;</a>

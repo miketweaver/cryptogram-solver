@@ -25,6 +25,14 @@ const els = {
   clearGuessesBtn: document.getElementById("clear-guesses-btn"),
   display: document.getElementById("cipher-display"),
   stats: document.getElementById("stats"),
+  copySourceBtn: document.getElementById("copy-source-btn"),
+  copySolutionBtn: document.getElementById("copy-solution-btn"),
+  copyKeyBtn: document.getElementById("copy-key-btn"),
+  importKeyBtn: document.getElementById("import-key-btn"),
+  importPanel: document.getElementById("import-panel"),
+  importText: document.getElementById("import-text"),
+  applyKeyBtn: document.getElementById("apply-key-btn"),
+  cancelImportBtn: document.getElementById("cancel-import-btn"),
 };
 
 // ---------------------------------------------------------------------------
@@ -395,6 +403,99 @@ function gramCard(title, entries, note) {
 }
 
 // ---------------------------------------------------------------------------
+// Export / import: copy the source, current solution, or key; paste a key.
+// ---------------------------------------------------------------------------
+
+// The cipher exactly as entered.
+function buildSource() {
+  return state.rawText;
+}
+
+// The current (possibly partial) plaintext. Guessed characters are applied;
+// unsolved letters are shown in lowercase so they stand out; spaces and
+// punctuation are preserved.
+function buildSolution() {
+  let out = "";
+  for (const ch of state.rawText) {
+    const g = state.mapping[ch];
+    if (g != null) out += g;
+    else if (isLetter(ch)) out += ch.toLowerCase();
+    else out += ch;
+  }
+  return out;
+}
+
+// The key as CIPHER=PLAIN lines, sorted by cipher character.
+function buildKey() {
+  const chars = Object.keys(state.mapping).sort();
+  return chars.map((c) => `${c}=${state.mapping[c]}`).join("\n");
+}
+
+// Replace the current guesses with a key parsed from CIPHER=PLAIN lines.
+function importKey(text) {
+  const next = {};
+  for (const line of text.split(/\r?\n/)) {
+    const s = line.trim();
+    if (!s || s.startsWith("#")) continue;
+    const eq = s.indexOf("=");
+    if (eq === -1) continue;
+    const left = s.slice(0, eq).trim();
+    const right = s.slice(eq + 1).trim();
+    if (!left || !right) continue;
+    // Cipher chars are uppercased to match the display; letter guesses too.
+    const c = left[0].toUpperCase();
+    let p = right[0];
+    if (/[a-z]/i.test(p)) p = p.toUpperCase();
+    next[c] = p;
+  }
+  state.mapping = next;
+  renderCipher();
+}
+
+function flash(btn, msg) {
+  if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(() => { btn.textContent = btn.dataset.label; }, 1200);
+}
+
+function copyText(text, btn, emptyMsg) {
+  if (!text) { flash(btn, emptyMsg || "Nothing to copy"); return; }
+  const ok = () => flash(btn, "Copied!");
+  const fail = () => fallbackCopy(text, btn);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(ok).catch(fail);
+  } else {
+    fallbackCopy(text, btn);
+  }
+}
+
+function fallbackCopy(text, btn) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    flash(btn, "Copied!");
+  } catch (e) {
+    flash(btn, "Copy failed");
+  }
+  document.body.removeChild(ta);
+}
+
+function toggleImportPanel(show) {
+  const open = show != null ? show : els.importPanel.classList.contains("hidden");
+  els.importPanel.classList.toggle("hidden", !open);
+  if (open) {
+    els.importText.value = buildKey();
+    els.importText.focus();
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Persistence (localStorage) — keep the puzzle and guesses across reloads,
 // tab closes, and trips to the stats reference page.
 // ---------------------------------------------------------------------------
@@ -439,6 +540,16 @@ els.solveBtn.addEventListener("click", startSolving);
 els.newPuzzleBtn.addEventListener("click", newPuzzle);
 els.clearGuessesBtn.addEventListener("click", clearGuesses);
 document.addEventListener("keydown", onKeyDown);
+
+els.copySourceBtn.addEventListener("click", () => copyText(buildSource(), els.copySourceBtn));
+els.copySolutionBtn.addEventListener("click", () => copyText(buildSolution(), els.copySolutionBtn));
+els.copyKeyBtn.addEventListener("click", () => copyText(buildKey(), els.copyKeyBtn, "No guesses yet"));
+els.importKeyBtn.addEventListener("click", () => toggleImportPanel());
+els.cancelImportBtn.addEventListener("click", () => toggleImportPanel(false));
+els.applyKeyBtn.addEventListener("click", () => {
+  importKey(els.importText.value);
+  toggleImportPanel(false);
+});
 
 // Restore a saved session, if any, and jump straight back into the solver.
 if (loadState()) {
